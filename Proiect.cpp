@@ -20,7 +20,7 @@ Proiect::Proiect()
 
     for (int x = -5; x <= 5; x++) {
         for (int z = -5; z <= 5; z++) {
-            surfaces[x + 5][z + 5] = std::make_unique<Surface>(v1);
+            surfaces[x + 5][z + 5] = std::make_unique<Surface>(v1, x + 5);
         }
     }
     
@@ -77,27 +77,29 @@ void Proiect::Update(float deltaTimeSeconds)
         }
     }
     /*
-    glm::mat4 p1 = glm::translate(m, glm::vec3(0, 0, s_pos1));
-    s1->FillRenderInfo(deltaTimeSeconds, p1, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+    {
+        glm::mat4 p1 = glm::translate(m, glm::vec3(0, 0, s_pos1));
+        s1->FillRenderInfo(deltaTimeSeconds, p1, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
-    glm::mat4 p2 = glm::translate(m, glm::vec3(0, 0, s_pos2));
-    s1->FillRenderInfo(deltaTimeSeconds, p2, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+        glm::mat4 p2 = glm::translate(m, glm::vec3(0, 0, s_pos2));
+        s1->FillRenderInfo(deltaTimeSeconds, p2, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
-    glm::mat4 p3 = glm::translate(m, glm::vec3(0, 0, s_pos3));
-    s1->FillRenderInfo(deltaTimeSeconds, p3, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+        glm::mat4 p3 = glm::translate(m, glm::vec3(0, 0, s_pos3));
+        s1->FillRenderInfo(deltaTimeSeconds, p3, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
-    glm::mat4 p4 = glm::translate(m, glm::vec3(0, 0, s_pos4));
-    s1->FillRenderInfo(deltaTimeSeconds, p4, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+        glm::mat4 p4 = glm::translate(m, glm::vec3(0, 0, s_pos4));
+        s1->FillRenderInfo(deltaTimeSeconds, p4, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
-    glm::mat4 p5 = glm::translate(m, glm::vec3(0, 0, s_pos5));
-    s1->FillRenderInfo(deltaTimeSeconds, p5, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+        glm::mat4 p5 = glm::translate(m, glm::vec3(0, 0, s_pos5));
+        s1->FillRenderInfo(deltaTimeSeconds, p5, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
-    //s_pos1 += deltaTimeSeconds; s_pos2 += deltaTimeSeconds; s_pos3 += deltaTimeSeconds; s_pos4 += deltaTimeSeconds; s_pos5 += deltaTimeSeconds;
-    if (s_pos1 > 5) s_pos1 -= 5;
-    if (s_pos2 > 5) s_pos2 -= 5;
-    if (s_pos3 > 5) s_pos3 -= 5;
-    if (s_pos4 > 5) s_pos4 -= 5;
-    if (s_pos5 > 5) s_pos5 -= 5;
+        //s_pos1 += deltaTimeSeconds; s_pos2 += deltaTimeSeconds; s_pos3 += deltaTimeSeconds; s_pos4 += deltaTimeSeconds; s_pos5 += deltaTimeSeconds;
+        if (s_pos1 > 5) s_pos1 -= 5;
+        if (s_pos2 > 5) s_pos2 -= 5;
+        if (s_pos3 > 5) s_pos3 -= 5;
+        if (s_pos4 > 5) s_pos4 -= 5;
+        if (s_pos5 > 5) s_pos5 -= 5;
+    }
     */
 }
 

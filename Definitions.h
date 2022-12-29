@@ -27,5 +27,5 @@
 #endif // !#define GetCurrentDir _getcwd
 
 #ifndef SURF_DEF_VERT
-#define SURF_DEF_VERT 5
+#define SURF_DEF_VERT 50
 #endif
