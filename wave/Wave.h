@@ -36,6 +36,7 @@ namespace m2 {
 	};
 
 	std::shared_ptr<Wave> SlowUpFastDownWave(int precision = TEXT_DEF_PRECISION);
+	std::shared_ptr<Wave> NoiseWave(int precision = TEXT_DEF_PRECISION);
 
 	std::shared_ptr<Wave> WavePreset(int preset, int precision = TEXT_DEF_PRECISION);
 }

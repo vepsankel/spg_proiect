@@ -3,20 +3,20 @@
 bool m2::Surface::isShaderLoaded = false;
 std::unordered_map<int, m2::SurfaceSpecifier> m2::Surface::sizeToSurface;
 std::unique_ptr<Shader> m2::Surface::shader;
-
+std::unordered_map<std::string, std::shared_ptr<m2::WaveDetails>> m2::Surface::waves;
 
 m2::Surface::Surface(int size)
 {
 	this->time = 0;
 	this->size = size;
+	LoadShader();
 	GenerateBuffersForSize(size);
 }
 
-m2::Surface::Surface(std::shared_ptr<Wave> w, int size) : Surface(size)
+m2::Surface::Surface(std::vector<std::string> names, int size) : Surface(size)
 {
-	this->wave = w;
-
-	LoadShader();
+	this->names = names;
+	this->validNames = names; // TODO
 }
 
 void m2::Surface::FillRenderInfo(float dt, const glm::mat4 & modelMatrix, const glm::mat4 & viewMatrix, const glm::mat4 & projectionMatrix)
@@ -30,30 +30,45 @@ void m2::Surface::FillRenderInfo(float dt, const glm::mat4 & modelMatrix, const 
 	glUniformMatrix4fv(shader->loc_view_matrix, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	glUniformMatrix4fv(shader->loc_projection_matrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, wave->GetText());
-	int loc = glGetUniformLocation(shader->program, "tex");
-	glUniform1i(loc, 0);
+	int loc;
+
+	std::vector<glm::mat3> texCoordPositions, texCoordSpeeds;
+	std::vector<GLuint> textures;
+
+	texCoordPositions.clear();
+	texCoordSpeeds.clear();
+	textures.clear();
+
+	int i = 0;
+	for (std::string name : validNames) {
+		std::shared_ptr<WaveDetails> wd = waves[name];
+
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, wd->texture);
+
+		textures.push_back(i);
+		texCoordPositions.push_back(wd->localTexCoordToTexCoord);
+		texCoordSpeeds.push_back(wd->texCoordSpeed);
+
+		
+		std::string tex_name = "texs[" + std::to_string(i) + "]";
+		loc = glGetUniformLocation(shader->program, tex_name.c_str());
+		glUniform1i(loc, i);
+
+		i++;
+	}
+
+	loc = glGetUniformLocation(shader->program, "texCoordPositions");
+	glUniformMatrix3fv(loc, validNames.size(), GL_TRUE, (GLfloat*)&texCoordPositions[0]);
+
+	loc = glGetUniformLocation(shader->program, "texCoordSpeeds");
+	glUniformMatrix3fv(loc, validNames.size(), GL_TRUE, (GLfloat*)&texCoordSpeeds[0]);
+
+	loc = glGetUniformLocation(shader->program, "wave_num");
+	glUniform1i(loc, validNames.size());
 
 	loc = glGetUniformLocation(shader->program, "time");
 	glUniform1f(loc, time);
-
-	{
-		float angle = time / 4;
-		glm::mat3 one(
-			1, 0, 0,
-			0, 1, 0,
-			0, 0, 1);
-		loc = glGetUniformLocation(shader->program, "texCoordPosition");
-		glUniformMatrix3fv(loc, 1, GL_TRUE, (GLfloat*)&one[0]);
-
-		glm::mat3 speed(
-			0, 0, 0,
-			0, 0.5, 0,
-			0, 0, 1);
-		loc = glGetUniformLocation(shader->program, "texCoordSpeed");
-		glUniformMatrix3fv(loc, 1, GL_TRUE, (GLfloat*)&speed[0]);
-	}
 
 	glDrawArrays(GL_TRIANGLES, 0, 2 * 6 * (size - 1) * (size- 1));
 	glBindVertexArray(0);
@@ -175,4 +190,31 @@ void m2::Surface::LoadShader()
 	shader->CreateAndLink();
 
 	isShaderLoaded = true;
+}
+
+void m2::Surface::GenerateValidNames() {
+	validNames.clear();
+
+	for (std::string name : names) {
+		if (Surface::hasWave(name))
+			validNames.push_back(name);
+	}
+}
+
+void m2::Surface::addWave(std::string name, std::shared_ptr<WaveDetails> wave) {
+	waves[name] = wave;
+
+	//GenerateValidNames(); TODO
+}
+
+void m2::Surface::removeWave(std::string name) {
+	waves.erase(name);
+
+	//GenerateValidNames(); TODO
+}
+
+bool m2::Surface::hasWave(std::string name) {
+	if (waves.find(name) == waves.end())
+		return false;
+	return true;
 }

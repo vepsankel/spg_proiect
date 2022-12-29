@@ -17,18 +17,32 @@ Proiect::Proiect()
     window->SetSize(800, 800);
 
     v1 = WavePreset(0,11);
+    v2 = WavePreset(1, 14);
+    v3 = WavePreset(1, 14);
+
+    std::vector<std::string> names;
+    names.push_back("MainWave");
+    names.push_back("NoiseLE");
+    names.push_back("NoiseFW");
+    
+    
 
     for (int x = -5; x <= 5; x++) {
         for (int z = -5; z <= 5; z++) {
-            surfaces[x + 5][z + 5] = std::make_unique<Surface>(v1, x + 5);
+            surfaces[x + 5][z + 5] = std::make_unique<Surface>(names, (x + 6) * 4);
         }
     }
+
+    shared_ptr<WaveDetails> wd1 = std::make_shared<WaveDetails>(v1->GetText(), SURFACE_DIR_UNITY, SURF_SPEED_DOWN(0.1));
+    shared_ptr<WaveDetails> wd2 = std::make_shared<WaveDetails>(v2->GetText(), SURFACE_DIR_ROTATE(0), SURF_SPEED_DOWN(0.02));
+    shared_ptr<WaveDetails> wd3 = std::make_shared<WaveDetails>(v2->GetText(), SURFACE_DIR_ROTATE(M_PI/2), SURF_SPEED_DOWN(0.03));
     
-    s1 = std::make_unique<Surface>(v1);
-    s2 = std::make_unique<Surface>(v1);
-    s3 = std::make_unique<Surface>(v1);
-    s4 = std::make_unique<Surface>(v1);
-    s5 = std::make_unique<Surface>(v1);
+    std::cout << "wd2 text " << v2->GetText() << "\n";
+
+    Surface::addWave("MainWave", wd1);
+    Surface::addWave("NoiseFW", wd2);
+    Surface::addWave("NoiseLE", wd3);
+    
 }
 
 

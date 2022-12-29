@@ -32,7 +32,7 @@ namespace m2
         Texture2D* originalImage;
         Texture2D* processedImage;
 
-        std::shared_ptr<Wave> v1;
+        std::shared_ptr<Wave> v1, v2, v3;
         std::shared_ptr<Surface> s1, s2, s3, s4, s5;
         std::shared_ptr<Surface> surfaces[11][11];
         float s_pos1, s_pos2, s_pos3, s_pos4, s_pos5;

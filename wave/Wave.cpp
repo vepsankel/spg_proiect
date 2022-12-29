@@ -103,6 +103,7 @@ void Wave::FillTexture() {
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 	// Unbind the VAO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
@@ -193,7 +194,60 @@ std::shared_ptr<Wave> m2::SlowUpFastDownWave(int precision)
 	return v;
 }
 
+std::shared_ptr<Wave> m2::NoiseWave(int precision) {
+	std::shared_ptr<Wave> v = std::make_shared<Wave>(precision);
+
+	std::complex<float> sample1(std::complex<float>(0, 0));
+	std::complex<float> sample2(std::complex<float>(0.1, 0));
+	std::complex<float> sample3(std::complex<float>(0.2, 0));
+	std::complex<float> sample4(std::complex<float>(0.0, 0));
+	std::complex<float> sample5(std::complex<float>(-0.3, 0));
+	std::complex<float> sample6(std::complex<float>(-0.1, 0));
+	std::complex<float> sample7(std::complex<float>(0.1, 0));
+	std::complex<float> sample8(std::complex<float>(0.15, 0));
+	std::complex<float> sample9(std::complex<float>(0.1, 0));
+	std::complex<float> sample10(std::complex<float>(0.05, 0));
+	std::complex<float> sample11(std::complex<float>(0.1, 0));
+	std::complex<float> sample12(std::complex<float>(0.0, 0));
+	std::complex<float> sample13(std::complex<float>(0.3, 0));
+	std::complex<float> sample14(std::complex<float>(0.1, 0));
+	std::complex<float> sample15(std::complex<float>(0.0, 0));
+
+	Fourier f1;
+	std::vector<std::complex<float>> vec;
+	vec.push_back(sample1);
+	vec.push_back(sample2);
+	vec.push_back(sample3);
+	vec.push_back(sample4);
+	vec.push_back(sample5);
+	vec.push_back(sample6);
+	vec.push_back(sample7);
+	vec.push_back(sample8);
+	vec.push_back(sample9);
+	vec.push_back(sample10);
+	vec.push_back(sample11);
+	vec.push_back(sample12);
+	vec.push_back(sample13);
+	vec.push_back(sample14);
+	vec.push_back(sample15);
+
+	f1.SetSample(vec);
+
+	std::cout << f1;
+
+	v->SetFourier(f1);
+	v->FillTexture();
+
+	return v;
+}
+
 std::shared_ptr<Wave> m2::WavePreset(int preset, int precision) {
-	switch (preset)
-			case 0: return SlowUpFastDownWave(precision);
+	switch (preset) {
+	case 0: {
+		return SlowUpFastDownWave(precision);
+	}
+	case 1: {
+		return NoiseWave(precision);
+	}
+	}
 }
