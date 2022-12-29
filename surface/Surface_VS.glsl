@@ -1,3 +1,5 @@
+#version 330
+
 in vec2 v_texCoord;
 in vec2 v_position;  // Vertex position
 

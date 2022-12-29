@@ -141,4 +141,6 @@ std::ostream& m2::operator<<(std::ostream& os, const Fourier& f)
 	os << "AngFreq\t|\tAmp" << endl;
 	for (int i = 0; i < f.GetPeriod(); i++)
 		os << f.GetAngFreqs()[i] << "\t|\t" << f.GetAmps()[i] << endl;
+
+	return os;
 }
