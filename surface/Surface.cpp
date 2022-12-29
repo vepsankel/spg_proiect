@@ -1,5 +1,8 @@
 #include "Surface.h"
 
+bool m2::Surface::isShaderLoaded = false;
+std::unique_ptr<Shader> m2::Surface::shader;
+
 m2::Surface::Surface()
 {
 	this->time = 0;
@@ -105,11 +108,28 @@ void m2::Surface::FillRenderInfo(float dt, glm::mat4 modelMatrix, glm::mat4 view
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, wave->GetText());
-	int texLocation = glGetUniformLocation(shader->program, "tex");
-	glUniform1i(texLocation, 0);
+	int loc = glGetUniformLocation(shader->program, "tex");
+	glUniform1i(loc, 0);
 
-	texLocation = glGetUniformLocation(shader->program, "time");
-	glUniform1f(texLocation, time);
+	loc = glGetUniformLocation(shader->program, "time");
+	glUniform1f(loc, time);
+
+	{
+		float angle = time / 10;
+		glm::mat3 one(
+			cos(angle), -sin(angle), 0,
+			sin(angle), cos(angle), 0,
+			0, 0, 1);
+		loc = glGetUniformLocation(shader->program, "texCoordPosition");
+		glUniformMatrix3fv(loc, 1, GL_TRUE, (GLfloat *) & one[0]);
+
+		glm::mat3 speed(
+			0, 0, 0,
+			0, 0, 0.1f,
+			0, 0, 0);
+		loc = glGetUniformLocation(shader->program, "texCoordSpeed");
+		glUniformMatrix3fv(loc, 1, GL_TRUE, (GLfloat*) & speed[0]);
+	}
 
 	glDrawArrays(GL_TRIANGLES, 0, 2*6*(SURF_DEF_VERT-1)*(SURF_DEF_VERT - 1));
 
@@ -119,6 +139,9 @@ void m2::Surface::FillRenderInfo(float dt, glm::mat4 modelMatrix, glm::mat4 view
 
 void m2::Surface::LoadShader()
 {
+	if (isShaderLoaded)
+		return;
+
 	std::string shaderPath = "/src/lab_m2/spg_proiect/surface/Surface_";
 
 	char buff[200]; //create string buffer to hold path
@@ -130,4 +153,6 @@ void m2::Surface::LoadShader()
 	shader->AddShader(current_working_dir + shaderPath + "VS.glsl", GL_VERTEX_SHADER);
 	shader->AddShader(current_working_dir + shaderPath + "FS.glsl", GL_FRAGMENT_SHADER);
 	shader->CreateAndLink();
+
+	isShaderLoaded = true;
 }

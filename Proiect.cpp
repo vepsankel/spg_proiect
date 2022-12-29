@@ -17,6 +17,12 @@ Proiect::Proiect()
     window->SetSize(800, 800);
 
     v1 = WavePreset(0,11);
+
+    for (int x = -5; x <= 5; x++) {
+        for (int z = -5; z <= 5; z++) {
+            surfaces[x + 5][z + 5] = std::make_unique<Surface>(v1);
+        }
+    }
     
     s1 = std::make_unique<Surface>(v1);
     s2 = std::make_unique<Surface>(v1);
@@ -64,6 +70,13 @@ void Proiect::Update(float deltaTimeSeconds)
 
     glm::mat4 m = glm::scale(glm::mat4(1), glm::vec3(10,2,10));
 
+    for (int x = -5; x <= 5; x++) {
+        for (int z = -5; z <= 5; z++) {
+            glm::mat4 p = glm::translate(m, glm::vec3(x, 0, z));
+            surfaces[x+5][z+5]->FillRenderInfo(deltaTimeSeconds, p, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+        }
+    }
+    /*
     glm::mat4 p1 = glm::translate(m, glm::vec3(0, 0, s_pos1));
     s1->FillRenderInfo(deltaTimeSeconds, p1, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
@@ -85,6 +98,7 @@ void Proiect::Update(float deltaTimeSeconds)
     if (s_pos3 > 5) s_pos3 -= 5;
     if (s_pos4 > 5) s_pos4 -= 5;
     if (s_pos5 > 5) s_pos5 -= 5;
+    */
 }
 
 

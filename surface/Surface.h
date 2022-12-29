@@ -22,7 +22,9 @@ namespace m2 {
 		float texCoords[2 * 6 * (SURF_DEF_VERT - 1) * (SURF_DEF_VERT - 1)];
 		float vertices[2 * 6 * (SURF_DEF_VERT - 1) * (SURF_DEF_VERT - 1)];
 
-		std::unique_ptr<Shader> shader;
+		static std::unique_ptr<Shader> shader;
+		static bool isShaderLoaded;
+
 		void LoadShader();
 	};
 }

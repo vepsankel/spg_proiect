@@ -1,23 +1,26 @@
+in vec2 v_texCoord;
 in vec2 v_position;  // Vertex position
-in vec2 v_texCoord;  // Vertex texture coordinate
 
-out vec2 TexCoord;  // Varying variable for the fragment shader
-out vec2 vPos;
 out vec4 color;
 
 // Uniform properties
 uniform mat4 Model;
 uniform mat4 View;
 uniform mat4 Projection;
+
 uniform float time;
+
 uniform sampler2D tex;
+uniform mat3 texCoordPosition;
+uniform mat3 texCoordSpeed;
 
 void main() {
-  vec4 texColor = texture(tex, vec2(v_texCoord.x, v_texCoord.y - time / 10));
+	vec3 texCoordV3 = texCoordPosition * vec3(v_texCoord, 1);
+	texCoordV3 += time * texCoordSpeed * vec3(1,1,1);
+	vec2 texCoord = vec2(texCoordV3.x, texCoordV3.y);
 
-  gl_Position = Projection * View * Model * vec4(v_position.x, texColor.y - 0.5, v_position.y, 1.0);  // Set the vertex position
+	vec4 texColor = texture(tex, vec2(texCoord.x, texCoord.y));
 
-  TexCoord = v_texCoord;  // Pass the texture coordinate to the fragment shader
-  vPos = v_position;
-  color = texColor;
+	gl_Position = Projection * View * Model * vec4(v_position.x, texColor.y - 0.5, v_position.y, 1.0);  // Set the vertex position
+	color = texColor;
 }
