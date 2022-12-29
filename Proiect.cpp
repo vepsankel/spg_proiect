@@ -33,6 +33,8 @@ Proiect::~Proiect()
 
 void Proiect::Init()
 {
+    std::cout << "Init" << "\n";
+
     auto camera = GetSceneCamera();
     camera->SetPositionAndRotation(glm::vec3(0, 2, 4), glm::quat(glm::vec3(-30 * TO_RADIANS, 0, 0)));
     camera->Update();

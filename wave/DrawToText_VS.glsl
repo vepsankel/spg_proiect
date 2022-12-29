@@ -1,3 +1,5 @@
+#version 330
+
 in vec2 v_position;  // Vertex position
 in vec2 v_texCoord;  // Vertex texture coordinate
 
