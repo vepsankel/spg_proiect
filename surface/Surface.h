@@ -5,6 +5,7 @@
 #include "../wave/Wave.h"
 
 #define SURFACE_DIR_UNITY glm::mat3(1)
+#define SURFACE_DIR_SCALE(x,y) glm::mat3(x,0,0,0,y,0,0,0,1)
 #define SURFACE_DIR_ROTATE(a) glm::mat3(cos(a), -sin(a), 0, sin(a), cos(a), 0, 0, 0, 1)
 
 #define SURF_SPEED_DOWN(s) glm::mat3(0,0,0,0,0,s,0,0,1)

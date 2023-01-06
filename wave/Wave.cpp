@@ -158,10 +158,10 @@ std::shared_ptr<Wave> m2::SlowUpFastDownWave(int precision)
 	std::complex<float> sample6(std::complex<float>(1.0, 0));
 	std::complex<float> sample7(std::complex<float>(1.5, 0));
 	std::complex<float> sample8(std::complex<float>(1.4, 0));
-	std::complex<float> sample9(std::complex<float>(1.2, 0));
-	std::complex<float> sample10(std::complex<float>(0.95, 0));
-	std::complex<float> sample11(std::complex<float>(0.7, 0));
-	std::complex<float> sample12(std::complex<float>(0.3, 0));
+	std::complex<float> sample9(std::complex<float>(1.5, 0));
+	std::complex<float> sample10(std::complex<float>(1.3, 0));
+	std::complex<float> sample11(std::complex<float>(1.2, 0));
+	std::complex<float> sample12(std::complex<float>(0.9, 0));
 	std::complex<float> sample13(std::complex<float>(0.1, 0));
 	std::complex<float> sample14(std::complex<float>(0.05, 0));
 	std::complex<float> sample15(std::complex<float>(0.01, 0));
